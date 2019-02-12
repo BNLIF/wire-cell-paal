@@ -19,7 +19,7 @@
 #include "constraints.h"
 #include "ids.h"
 #include "lp_base.h"
-#include "/problem_type.h"
+#include "problem_type.h"
 #include "irange.h"
 
 #include <boost/range/iterator_range.hpp>
