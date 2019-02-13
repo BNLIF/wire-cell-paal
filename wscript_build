@@ -1,4 +1,4 @@
 # -*- python -*-
-bld.make_package('WireCellPaal', use='BOOST')
+bld.make_package('WireCellPaal', use='BOOST GLPK')
 
 
