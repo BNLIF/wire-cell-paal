@@ -1,14 +1,42 @@
 #include "sample_graph.h"
 #include "WireCellPaal/steiner_tree.h"
 
+#include <boost/graph/graphviz.hpp>
+
 #include <iostream>
 #include <vector>
+
+const char* name[] = {"A", "B", "C", "D", "E",
+                     "F", "G", "H", "I", "J",
+                     "K", "L"};
+
 int main() {
     using SGM = sample_graphs_metrics;
+
+    //
+    
+
     auto metric = SGM::get_graph_metric_steiner();
+    auto g = SGM::get_graph_steiner();
+
+    boost::dynamic_properties dp;
+    dp.property("node_id", boost::get(boost::vertex_index,g));
+    dp.property("color", boost::get(boost::vertex_color,g));
+    dp.property("weight", boost::get(boost::edge_weight,g));
+
+    //   dp.property("id", name);
+    // dp.property("node_id", boost::make_label_writer(name));
+    //boost::make_label_writer(boost::get(boost::vertex_color,g)),
+    
+    boost::write_graphviz(std::cout, g, boost::make_label_writer(name),
+			  boost::make_label_writer(boost::get(boost::edge_weight, g))
+			  );
+    
+    
     std::vector<int> terminals = {SGM::A, SGM::B, SGM::C, SGM::D};
-    std::vector<int> nonterminals = {SGM::E};
+    std::vector<int> nonterminals = {SGM::E, SGM::F};
     std::vector<int> selected_nonterminals;
+    
     // solve it
     paal::ir::steiner_tree_iterative_rounding(metric, terminals,
             nonterminals, std::back_inserter(selected_nonterminals));
@@ -18,7 +46,7 @@ int main() {
         std::cout << v << std::endl;
     }
     for (auto v : selected_nonterminals) {
-        std::cout << v << std::endl;
+      std::cout << v << " N" <<  std::endl;
     }
     auto cost = paal::ir::steiner_utils::count_cost(selected_nonterminals,
             terminals, metric);
