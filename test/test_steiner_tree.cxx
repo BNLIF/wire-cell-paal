@@ -51,5 +51,19 @@ int main() {
     auto cost = paal::ir::steiner_utils::count_cost(selected_nonterminals,
             terminals, metric);
     std::cout << "Cost of the solution: " << cost << std::endl;
+
+    auto all_elements=boost::range::join(terminals,selected_nonterminals);
+    using Vertex = typename paal::data_structures::metric_traits<sample_graphs_metrics::GraphMT>::VertexType;
+    paal::data_structures::bimap<Vertex> idx;
+    auto g_sub = paal::data_structures::metric_to_bgl_with_index(metric,
+							     all_elements, idx);
+    std::vector<std::size_t> pm(all_elements.size());
+    boost::prim_minimum_spanning_tree(g_sub, &pm[0]);
+    auto idx_m = paal::data_structures::make_metric_on_idx(metric, idx);
+    for (size_t i=0; i!=pm.size(); i++) {
+      std::cout << i << " " << pm[i] << " " << idx_m(i, pm[i]) << std::endl;
+    }
+    
+      
     paal::lp::glp::free_env();
 }
