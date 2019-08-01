@@ -13,8 +13,8 @@
  * @version 1.0
  * @date 2013-11-27
  */
-#ifndef PAAL_STEINER_TREE_GREEDY_HPP
-#define PAAL_STEINER_TREE_GREEDY_HPP
+#ifndef PAAL_STEINER_TREE_GREEDY_MOD_HPP
+#define PAAL_STEINER_TREE_GREEDY_MOD_HPP
 
 #include "accumulate_functors.h"
 #include "functors.h"
@@ -81,7 +81,7 @@ make_nearest_recorder(NearestMap &nearest_map, LastEdgeMap &vpred, Tag) {
 }
 }
 /**
- * @brief non-named version of  steiner_tree_greedy
+ * @brief non-named version of  steiner_tree_greedy_mod
  *
  * @tparam Graph
  * @tparam OutputIterator
@@ -94,7 +94,7 @@ make_nearest_recorder(NearestMap &nearest_map, LastEdgeMap &vpred, Tag) {
  */
 template <typename Graph, typename OutputIterator, typename EdgeWeightMap,
           typename ColorMap>
-auto steiner_tree_greedy(const Graph &g, OutputIterator out,
+auto steiner_tree_greedy_mod(const Graph &g, OutputIterator out,
                          EdgeWeightMap edge_weight, ColorMap color_map)
     -> typename std::pair<
           typename boost::property_traits<EdgeWeightMap>::value_type,
@@ -172,18 +172,18 @@ auto steiner_tree_greedy(const Graph &g, OutputIterator out,
       }
     }
 
-    //    std::vector<Edge> terminal_edge;
+    std::vector<Edge> terminal_edge;
     for (auto it = map_saved_edge.begin(); it!=map_saved_edge.end(); it++){
       std::pair<Edge, bool> p = add_edge(it->first.first, it->first.second,
 	       WeightProperty(it->second.first, Base(it->second.second)),terminal_graph);
-      //terminal_edge.push_back(p.first);
+      terminal_edge.push_back(p.first);
     }
     
     // computing spanning tree on terminal_graph (original algs)
 
-    std::vector<Edge> terminal_edge;
-    boost::kruskal_minimum_spanning_tree(terminal_graph,
-    					 std::back_inserter(terminal_edge));
+    //    std::vector<Edge> terminal_edge;
+    //boost::kruskal_minimum_spanning_tree(terminal_graph,
+    //					 std::back_inserter(terminal_edge));
 
     // computing result
     std::vector<Edge> tree_edges;
@@ -213,7 +213,7 @@ auto steiner_tree_greedy(const Graph &g, OutputIterator out,
 }
 
 /**
- * @brief named version of  steiner_tree_greedy
+ * @brief named version of  steiner_tree_greedy_mod
  *
  * @tparam Graph
  * @tparam OutputIterator
@@ -226,9 +226,9 @@ auto steiner_tree_greedy(const Graph &g, OutputIterator out,
  */
 template <typename Graph, typename OutputIterator, typename P, typename T,
           typename R>
-auto steiner_tree_greedy(const Graph &g, OutputIterator out,
+auto steiner_tree_greedy_mod(const Graph &g, OutputIterator out,
                          const boost::bgl_named_params<P, T, R> &params) {
-    return steiner_tree_greedy(
+    return steiner_tree_greedy_mod(
         g, out, choose_const_pmap(get_param(params, boost::edge_weight), g,
                                   boost::edge_weight),
         choose_const_pmap(get_param(params, boost::vertex_color), g,
@@ -236,7 +236,7 @@ auto steiner_tree_greedy(const Graph &g, OutputIterator out,
 }
 
 /**
- * @brief version of  steiner_tree_greedy with all default parameters
+ * @brief version of  steiner_tree_greedy_mod with all default parameters
  *
  * @tparam Graph
  * @tparam OutputIterator
@@ -244,10 +244,10 @@ auto steiner_tree_greedy(const Graph &g, OutputIterator out,
  * @param out - edge output iterator
  */
 template <typename Graph, typename OutputIterator>
-auto steiner_tree_greedy(const Graph &g, OutputIterator out) {
-    return steiner_tree_greedy(g, out, boost::no_named_parameters());
+auto steiner_tree_greedy_mod(const Graph &g, OutputIterator out) {
+    return steiner_tree_greedy_mod(g, out, boost::no_named_parameters());
 }
 
 } // paal
 
-#endif // PAAL_STEINER_TREE_GREEDY_HPP
+#endif // PAAL_STEINER_TREE_GREEDY_MOD_HPP
