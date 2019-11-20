@@ -1,5 +1,5 @@
 #include "sample_graph.h"
-#include "WireCellPaal/steiner_tree.h"
+#include "WCPPaal/steiner_tree.h"
 
 #include <boost/graph/graphviz.hpp>
 

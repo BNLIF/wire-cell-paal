@@ -15,9 +15,9 @@
 #ifndef PAAL_SAMPLE_GRAPH_HPP
 #define PAAL_SAMPLE_GRAPH_HPP
 
-#include "WireCellPaal/graph_metrics.h"
-#include "WireCellPaal/euclidean_metric.h"
-#include "WireCellPaal/irange.h"
+#include "WCPPaal/graph_metrics.h"
+#include "WCPPaal/euclidean_metric.h"
+#include "WCPPaal/irange.h"
 
 #include <boost/graph/adjacency_list.hpp>
 
